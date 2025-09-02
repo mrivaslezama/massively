@@ -17,5 +17,52 @@ root "post#index"
 
 
 #2. change sqlite to postgres
+
+rails db:system:change --to postgresql
+
+
 #3. upload rails project to github
+
+done 
+
 #4. deploy app to render
+
+https://youtu.be/2T2rfxSCBdA?si=kUthqdskLcAQGRHM
+7:10 mins...
+
+dpg-d2r5nibe5dus73csetdg-a
+
+
+Connections
+Hostname
+dpg-d2r5nibe5dus73csetdg-a
+
+An internal hostname used by your Render services.
+
+Port
+5432
+
+Database
+mysite_4jgk
+
+Username
+mysite_4jgk_user
+
+Internal Database URL
+postgresql://mysite_4jgk_user:GGuRsBLQgaKvjxp0LmQVIV9XotJHzY7Q@dpg-d2r5nibe5dus73csetdg-a/mysite_4jgk
+
+
+
+Build Command
+bundle install; bundle exec rake assets:precompile; bundle exec rake assets:clean; ./bin/render-build.sh; ./bin/rails db:migrate
+
+
+Start Command
+bundle exec puma -t 5:5 -p ${PORT:-3000} -e ${RACK_ENV:-development}; ./bin/rails server
+
+
+
+¡Gracias!
+Código: ANIV2X1
+Elige Sus Anteojos Ahora >>
+
