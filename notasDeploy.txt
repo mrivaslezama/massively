@@ -1,0 +1,21 @@
+#1. Create project
+#2. change sqlite to postgres
+#3. upload rails project to github
+#4. deploy app to render
+
+
+#1. Create project
+
+rails new mysite
+cd mysite
+
+rails g scaffold post title:text body:text
+rails db:migrate
+
+routes.rb
+root "post#index"
+
+
+#2. change sqlite to postgres
+#3. upload rails project to github
+#4. deploy app to render
