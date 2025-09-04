@@ -61,6 +61,41 @@ Start Command
 bundle exec puma -t 5:5 -p ${PORT:-3000} -e ${RACK_ENV:-development}; ./bin/rails server
 
 
+Your Render deployment is failing due to two primary issues: one with JavaScript dependencies and another with your database connection.
+
+JavaScript Bundling Errors
+
+The esbuild command is failing because it can't find the required Hotwire packages: @hotwired/turbo-rails and @hotwired/stimulus. The error message "Could not resolve" confirms that these packages are missing. The jsbundling-rails gem expects yarn to handle these dependencies.
+
+Fix:
+You must add these packages to your package.json file. Open package.json in your project's root directory and add them to the dependencies or devDependencies section.
+JSON
+
+"dependencies": {
+  "@hotwired/stimulus": "^3.2.2",
+  "@hotwired/turbo-rails": "^8.0.0"
+}
+
+After updating the file, commit and push the changes. The next deployment will run yarn install and fetch these packages, resolving this error.
+
+Database Connection Failure
+
+You're also seeing the ActiveRecord::ConnectionNotEstablished error. This means the Rails application is trying to connect to a PostgreSQL database on a local socket that doesn't exist on the Render server.
+
+Fix:
+This is a configuration issue. Your Rails app's database.yml file is likely set up for local development, not for a production environment like Render. You need to configure it to use the DATABASE_URL environment variable that Render provides automatically when you link your web service to a PostgreSQL database.
+
+Ensure your config/database.yml file has the following for the production environment:
+YAML
+
+production:
+  url: <%= ENV['DATABASE_URL'] %>
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+This configuration tells Rails to get the database connection details from the DATABASE_URL environment variable, which Render sets for you. If you've configured your services using a render.yaml blueprint, Render should handle this for you, but double-check your database.yml to make sure it's using the environment variable and not a hardcoded socket path.
+
 
 ¡Gracias!
 Código: ANIV2X1
