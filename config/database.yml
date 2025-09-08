@@ -79,6 +79,11 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
+  url: <%= ENV['DATABASE_URL'] %>
+  adapter: postgresql
+  encoding: unicode
+  
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   primary: &primary_production
     <<: *default
     database: mysite_production
@@ -96,3 +101,5 @@ production:
     <<: *primary_production
     database: mysite_production_cable
     migrations_paths: db/cable_migrate
+
+
